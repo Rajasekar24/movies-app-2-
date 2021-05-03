@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Header from '../../common/header/Header';
 import moviesData from '../../assets/movieData';
 import Typography from '@material-ui/core/Typography';
 import './Details.css';
+import Home from '../home/Home';
 import YouTube from 'react-youtube';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import { Link } from 'react-router-dom';
 
 class Details extends Component {
     constructor() {
@@ -46,10 +47,13 @@ class Details extends Component {
     componentWillMount() {
         let currentState = this.state;
         currentState.movie = moviesData.filter((mov) => {
-            return mov.id === this.props.match.params.id
+            return mov.id === this.props.movieId
         })[0];
-
         this.setState({ currentState });
+    }
+
+    backToHomeHandler = () => {
+        ReactDOM.render(<Home />, document.getElementById('root'));
     }
 
     artistClickHandler = (url) => {
@@ -83,22 +87,20 @@ class Details extends Component {
         }
         return (
             <div className="details">
-                <Header id={this.props.match.params.id} showBookShowButton="true" />
+               <Header showBookShowButton="true" />
                 <div className="back">
-                    <Typography>
-                        <Link to="/">  &#60; Back to Home</Link>
-                    </Typography>
+                    <Typography onClick={this.backToHomeHandler}>
+                        &#60; Back to Home
+                        </Typography>
                 </div>
                 <div className="flex-containerDetails">
                     <div className="leftDetails">
                         <img src={movie.poster_url} alt={movie.title} />
                     </div>
-
                     <div className="middleDetails">
                         <div>
                             <Typography variant="headline" component="h2">{movie.title} </Typography>
                         </div>
-                        <br />
                         <div>
                             <Typography>
                                 <span className="bold">Genres: </span> {movie.genres.join(', ')}
@@ -127,7 +129,6 @@ class Details extends Component {
                             />
                         </div>
                     </div>
-
                     <div className="rightDetails">
                         <Typography>
                             <span className="bold">Rate this movie: </span>
@@ -139,7 +140,6 @@ class Details extends Component {
                                 onClick={() => this.starClickHandler(star.id)}
                             />
                         ))}
-
                         <div className="bold marginBottom16 marginTop16">
                             <Typography>
                                 <span className="bold">Artists:</span>

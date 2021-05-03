@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './Home.css';
+import Details from '../details/Details';
 import Header from '../../common/header/Header';
 import { withStyles } from '@material-ui/core/styles';
-import moviesData from '../../assets/movieData';
+import moviesData from '../../common/movieData';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -75,7 +77,7 @@ class Home extends Component {
     }
 
     movieClickHandler = (movieId) => {
-        this.props.history.push('/movie/' + movieId);
+        ReactDOM.render(<Details movieId={movieId} />, document.getElementById('root'));
     }
 
     render() {
@@ -83,11 +85,9 @@ class Home extends Component {
         return (
             <div>
                 <Header />
-
                 <div className={classes.upcomingMoviesHeading}>
                     <span>Upcoming Movies</span>
                 </div>
-
                 <GridList cols={5} className={classes.gridListUpcomingMovies} >
                     {moviesData.map(movie => (
                         <GridListTile key={movie.id}>
@@ -96,7 +96,6 @@ class Home extends Component {
                         </GridListTile>
                     ))}
                 </GridList>
-
                 <div className="flex-container">
                     <div className="left">
                         <GridList cellHeight={350} cols={4} className={classes.gridListMain}>
@@ -119,12 +118,10 @@ class Home extends Component {
                                         FIND MOVIES BY:
                                     </Typography>
                                 </FormControl>
-
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="movieName">Movie Name</InputLabel>
                                     <Input id="movieName" onChange={this.movieNameChangeHandler} />
                                 </FormControl>
-
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="select-multiple-checkbox">Genres</InputLabel>
                                     <Select
@@ -134,6 +131,7 @@ class Home extends Component {
                                         value={this.state.genres}
                                         onChange={this.genreSelectHandler}
                                     >
+                                        <MenuItem value="0">None</MenuItem>
                                         {genres.map(genre => (
                                             <MenuItem key={genre.id} value={genre.name}>
                                                 <Checkbox checked={this.state.genres.indexOf(genre.name) > -1} />
@@ -152,6 +150,7 @@ class Home extends Component {
                                         value={this.state.artists}
                                         onChange={this.artistSelectHandler}
                                     >
+                                        <MenuItem value="0">None</MenuItem>
                                         {artists.map(artist => (
                                             <MenuItem key={artist.id} value={artist.first_name + " " + artist.last_name}>
                                                 <Checkbox checked={this.state.artists.indexOf(artist.first_name + " " + artist.last_name) > -1} />
@@ -160,7 +159,6 @@ class Home extends Component {
                                         ))}
                                     </Select>
                                 </FormControl>
-
                                 <FormControl className={classes.formControl}>
                                     <TextField
                                         id="releaseDateStart"
@@ -170,7 +168,6 @@ class Home extends Component {
                                         InputLabelProps={{ shrink: true }}
                                     />
                                 </FormControl>
-
                                 <FormControl className={classes.formControl}>
                                     <TextField
                                         id="releaseDateEnd"
@@ -190,7 +187,7 @@ class Home extends Component {
                         </Card>
                     </div>
                 </div>
-            </div >
+            </div>
         )
     }
 }

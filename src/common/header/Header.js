@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './Header.css';
 import Button from '@material-ui/core/Button';
 import logo from '../../assets/logo.svg';
@@ -11,7 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Link } from 'react-router-dom';
+import BookShow from '../../screens/bookshow/BookShow';
 
 const customStyles = {
     content: {
@@ -130,6 +131,10 @@ class Header extends Component {
         this.setState({ contact: e.target.value });
     }
 
+    bookShowHandler = (e) => {
+        ReactDOM.render(<BookShow />, document.getElementById('root'));
+    }
+
     render() {
         return (
             <div>
@@ -142,11 +147,9 @@ class Header extends Component {
                     </div>
                     {this.props.showBookShowButton === "true" ?
                         <div className="bookshow-button">
-                            <Link to={"/bookshow/" + this.props.id}>
-                                <Button variant="contained" color="primary">
-                                    Book Show
-                                </Button>
-                            </Link>
+                            <Button variant="contained" color="primary" onClick={this.bookShowHandler}>
+                                Book Show
+                            </Button>
                         </div>
                         : ""}
                 </header>
@@ -161,7 +164,7 @@ class Header extends Component {
                         <Tab label="Login" />
                         <Tab label="Register" />
                     </Tabs>
-
+                    
                     {this.state.value === 0 &&
                         <TabContainer>
                             <FormControl required>
